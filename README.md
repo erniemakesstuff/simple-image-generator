@@ -7,6 +7,8 @@ Start shell environment
 `pipenv shell`
 `python main.py`
 
+Note: Running on 5051 port to avoid localhost collision when running as sidecar.
+
 ## venvs
 Creating virtual env if not present `python3 -m venv .venv`
 Activate venv shell `. ./.venv/bin/activate`

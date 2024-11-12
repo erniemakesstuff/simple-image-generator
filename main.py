@@ -1,5 +1,6 @@
 import multiprocessing
 import logging
+import os
 import sys
 import health_service
 
@@ -17,5 +18,6 @@ logger = logging.getLogger(__name__)
 app = health_service.app # Flask run initializes server.
 
 if __name__ ==  '__main__':
-    app.run(port=5050, debug=True, host='0.0.0.0')
-    print("starting")
+    logger.info("starting")
+
+    app.run(port=5051, debug=True, host='0.0.0.0')
