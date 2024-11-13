@@ -6,8 +6,8 @@ ARG AwsRegion
 ENV AWS_ACCESS_KEY_ID=$AwsSecretId
 ENV AWS_SECRET_ACCESS_KEY=$AwsSecretKey
 ENV AWS_REGION=$AwsRegion
-ENV GOOGLE_APPLICATION_CREDENTIALS="./localkey.json"
- 
+ENV SHARED_MEDIA_VOLUME_PATH="./tmp_media/"
+
 # Creates an app directory to hold your app’s source code
 WORKDIR /app
  

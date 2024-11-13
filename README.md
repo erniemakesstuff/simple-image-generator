@@ -8,7 +8,8 @@ Start shell environment
 `python main.py`
 
 Note: Running on 5051 port to avoid localhost collision when running as sidecar.
-
+Set env if running locally outside container:
+`export SHARED_MEDIA_VOLUME_PATH="/Users/owner/tmp_media/"`
 ## venvs
 Creating virtual env if not present `python3 -m venv .venv`
 Activate venv shell `. ./.venv/bin/activate`

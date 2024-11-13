@@ -2,7 +2,7 @@ import multiprocessing
 import logging
 import os
 import sys
-import health_service
+import controller
 
 file_handler = logging.FileHandler(filename='tmp.log')
 stdout_handler = logging.StreamHandler(stream=sys.stdout)
@@ -15,7 +15,7 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-app = health_service.app # Flask run initializes server.
+app = controller.app # Flask run initializes server.
 
 if __name__ ==  '__main__':
     logger.info("starting")
