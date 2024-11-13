@@ -45,11 +45,10 @@ def get_image(query: str, content_lookup_key: str) -> Path:
         r: Response = requests.get(lexica_url, timeout=120)
         j: object = json.loads(r.text)
     except Exception:
-        print("Error Retrieving Lexica Images")
-        pass
+        logger.error("Error Retrieving Lexica Images")
         return
     max_selection = len(j["images"])
-    image_index = random.randint(0, max_selection) % 10 # select top 10
+    image_index = random.randint(0, max_selection) % 27 # select top 27
     image_path: Path = Path(os.environ["SHARED_MEDIA_VOLUME_PATH"], content_lookup_key)
     if not os.path.exists(image_path):
         image_url: str = j["images"][image_index]["src"]
