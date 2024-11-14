@@ -49,7 +49,8 @@ def get_image(query: str, content_lookup_key: str) -> Path:
         return
     max_selection = len(j["images"])
     image_index = random.randint(0, max_selection) % 27 # select top 27
-    image_path: Path = Path(os.environ["SHARED_MEDIA_VOLUME_PATH"], content_lookup_key)
+    local_file_extension = ".png" # not persisted into s3
+    image_path: Path = Path(os.environ["SHARED_MEDIA_VOLUME_PATH"], content_lookup_key + local_file_extension)
     if not os.path.exists(image_path):
         image_url: str = j["images"][image_index]["src"]
         download_image(image_url, image_path)
