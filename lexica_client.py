@@ -41,19 +41,25 @@ def get_image(query: str, content_lookup_key: str) -> Path:
     safe_query: str = urllib.parse.quote(query.strip())
     lexica_url: str = f"https://lexica.art/api/v1/search?q={safe_query}"
     logger.info("Downloading Image From Lexica : %s", query)
+    image_path: Path = Path(os.environ["SHARED_MEDIA_VOLUME_PATH"], content_lookup_key)
+    if os.path.exists(image_path):
+        logger.info("Image already exists : %s - %s", id, query)
+        return image_path
+
     try:
+        time.sleep(60) # avoid throttling from Lexica
         r: Response = requests.get(lexica_url, timeout=120)
+
+        if not r.ok:
+            logger.error("Lexica client response code error: " + str(r.status_code) + " " + r.reason)
         j: object = json.loads(r.text)
-    except Exception:
-        logger.error("Error Retrieving Lexica Images")
+    except Exception as ex:
+        logger.error("Error Retrieving Lexica Images: " + str(ex))
         return
     max_selection = len(j["images"])
     image_index = random.randint(0, max_selection) % 27 # select top 27
-    image_path: Path = Path(os.environ["SHARED_MEDIA_VOLUME_PATH"], content_lookup_key)
     if not os.path.exists(image_path):
         image_url: str = j["images"][image_index]["src"]
         download_image(image_url, image_path)
-    else:
-        logger.info("Image already exists : %s - %s", id, query)
 
     return image_path
