@@ -16,7 +16,7 @@ def health_check():
 def create_image():
     data = request.get_json()  # Get the JSON data from the request
     def query_and_store():
-        lexica_client.get_image(data["promptInstruction"], data["contentLookupKey"])
+        lexica_client.get_image(data["promptInstruction"], data["contentLookupKey"], data["filepathPrefix"])
     t1 = threading.Thread(target=query_and_store)
     t1.start()
     return "Ok"

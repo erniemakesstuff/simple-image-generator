@@ -30,7 +30,7 @@ def download_image(url: str, file_path: Path) -> None:
         f.close()
 
 
-def get_image(query: str, content_lookup_key: str) -> Path:
+def get_image(query: str, content_lookup_key: str, filepath_prefix: str) -> Path:
     """Download random images that are relevant to the provided text.
 
     Args:
@@ -41,7 +41,8 @@ def get_image(query: str, content_lookup_key: str) -> Path:
     safe_query: str = urllib.parse.quote(query.strip())
     lexica_url: str = f"https://lexica.art/api/v1/search?q={safe_query}"
     logger.info("Downloading Image From Lexica : %s", query)
-    image_path: Path = Path(os.environ["SHARED_MEDIA_VOLUME_PATH"], content_lookup_key)
+    filename = filepath_prefix + content_lookup_key
+    image_path: Path = Path(filename)
     if os.path.exists(image_path):
         logger.info("Image already exists : %s - %s", id, query)
         return image_path
