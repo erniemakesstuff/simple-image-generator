@@ -12,11 +12,12 @@ def health_check():
 # Accept json body
 # promptInstruction: string
 # contentLookupKey: string
+# watermarkText: string
 @app.route("/image", methods=["POST"])
 def create_image():
     data = request.get_json()  # Get the JSON data from the request
     def query_and_store():
-        lexica_client.get_image(data["promptInstruction"], data["contentLookupKey"], data["filepathPrefix"])
+        lexica_client.get_image(data["promptInstruction"], data["contentLookupKey"], data["filepathPrefix"], data["watermarkText"])
     t1 = threading.Thread(target=query_and_store)
     t1.start()
     return "Ok"
