@@ -15,6 +15,7 @@ from PIL import ImageFont
 from PIL import ImageDraw
 from os import listdir
 from os.path import isfile, join
+import uuid
 
 
 logger = logging.getLogger(__name__)
@@ -51,9 +52,14 @@ def watermark_image(file_path: str, image_name: str, watermark_text: str, save_p
     for ny in range(100, h - 100):
         if ny % 285 != 0: # and y % 400 != 0 and y % 500 != 0
             continue
-        draw.text((x + 5, ny), watermark_text, fill=(255, 255, 255, interference_transparency), font=interference_text, anchor='ms')
+        draw.text((x - 15, ny), watermark_text, fill=(255, 255, 255, interference_transparency), font=interference_text, anchor='ms')
+    for ny in range(100, h - 100):
+        if ny % 400 != 0: # and y % 400 != 0 and y % 500 != 0
+            continue
+        draw.text((x + 75, ny), watermark_text, fill=(255, 255, 255, interference_transparency), font=interference_text, anchor='ms')
+
     combined_image = Image.alpha_composite(image, txt)
-    combined_image.save(Path(save_path + "/" + image_name))
+    combined_image.save(Path(save_path + "/" + str(uuid.uuid4()) + ".png"))
 
 
 path = "/Users/owner/Documents/0 Copper - misc, behind the scenes"
