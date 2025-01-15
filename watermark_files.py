@@ -79,7 +79,7 @@ def blur_image(file_path: str, image_name: str, save_path: str) -> None:
     image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS)
     filtered_image = image.filter(ImageFilter.GaussianBlur)
     filtered_2 = filtered_image.filter(ImageFilter.BLUR)
-    filtered_3 = filtered_2.filter(ImageFilter.BoxBlur)
+    filtered_3 = filtered_2.filter(ImageFilter.BoxBlur(10))
     filtered_3.save(Path(save_path + "/thumb_" + str(uuid.uuid4()) + ".png"))
 
 """
@@ -106,4 +106,6 @@ for f in onlyfiles:
 
 save_path = "/Users/owner/Documents/"
 blur_image("/Users/owner/Documents/", "daddy.png", save_path)
+blur_image("/Users/owner/Documents/", "boyfriend.png", save_path)
+blur_image("/Users/owner/Documents/", "fan.png", save_path)
 print('done')
