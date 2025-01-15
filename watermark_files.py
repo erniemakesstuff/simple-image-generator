@@ -61,6 +61,10 @@ def watermark_image(file_path: str, image_name: str, watermark_text: str, save_p
     combined_image = Image.alpha_composite(image, txt)
     combined_image.save(Path(save_path + "/" + str(uuid.uuid4()) + ".png"))
 
+    thumbnail_size = 256, 256
+    combined_image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS)
+    combined_image.save(Path(save_path + "/thumb_" + str(uuid.uuid4()) + ".png"))
+
 
 path = "/Users/owner/Documents/0 Copper - misc, behind the scenes"
 save_path = "/Users/owner/Documents/processed"
@@ -72,5 +76,5 @@ for f in onlyfiles:
     if f.startswith("."):
         continue
     watermark_image(path, f, watermark_text, save_path)
-    break
+
 print('done')
