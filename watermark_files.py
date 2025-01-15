@@ -12,7 +12,7 @@ import requests
 import random
 from PIL import Image
 from PIL import ImageFont
-from PIL import ImageDraw
+from PIL import ImageDraw, ImageFilter
 from os import listdir
 from os.path import isfile, join
 import uuid
@@ -65,8 +65,27 @@ def watermark_image(file_path: str, image_name: str, watermark_text: str, save_p
     combined_image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS)
     combined_image.save(Path(save_path + "/thumb_" + str(uuid.uuid4()) + ".png"))
 
+def blur_image(file_path: str, image_name: str, save_path: str) -> None:
+    """Download a single image.
+
+    Args:
+        url: URL to download the image from.
+        file_path: Path to save the image to.
+    """
+
+    image = Image.open(file_path + "/" + image_name).convert("RGBA")
+
+    thumbnail_size = 800, 800
+    image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS)
+    filtered_image = image.filter(ImageFilter.GaussianBlur)
+    filtered_2 = filtered_image.filter(ImageFilter.BLUR)
+    filtered_3 = filtered_2.filter(ImageFilter.BoxBlur)
+    filtered_3.save(Path(save_path + "/thumb_" + str(uuid.uuid4()) + ".png"))
+
+"""
 
 path = "/Users/owner/Documents/0 Copper - misc, behind the scenes"
+path2 = "/Users/owner/Documents/1 Silver - sensual"
 save_path = "/Users/owner/Documents/processed"
 watermark_text = "BityFan.com/noraK"
 
@@ -77,4 +96,14 @@ for f in onlyfiles:
         continue
     watermark_image(path, f, watermark_text, save_path)
 
+onlyfiles = [f for f in listdir(path2) if isfile(join(path2, f))]
+for f in onlyfiles:
+    if f.startswith("."):
+        continue
+    watermark_image(path2, f, watermark_text, save_path)
+
+"""
+
+save_path = "/Users/owner/Documents/"
+blur_image("/Users/owner/Documents/", "daddy.png", save_path)
 print('done')
