@@ -16,11 +16,12 @@ from PIL import ImageDraw, ImageFilter
 from os import listdir
 from os.path import isfile, join
 import uuid
+import csv
 
 
 logger = logging.getLogger(__name__)
 
-def watermark_image(file_path: str, image_name: str, watermark_text: str, save_path: str) -> None:
+def watermark_image(file_path: str, image_name: str, save_as_filename: str, watermark_text: str, save_path: str) -> None:
     """Download a single image.
 
     Args:
@@ -59,11 +60,26 @@ def watermark_image(file_path: str, image_name: str, watermark_text: str, save_p
         draw.text((x + 75, ny), watermark_text, fill=(255, 255, 255, interference_transparency), font=interference_text, anchor='ms')
 
     combined_image = Image.alpha_composite(image, txt)
-    combined_image.save(Path(save_path + "/" + str(uuid.uuid4()) + ".png"))
+    combined_image.save(Path(save_path + "/" + save_as_filename + ".png"))
 
-    thumbnail_size = 256, 256
+    thumbnail_size = 125, 125
     combined_image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS)
-    combined_image.save(Path(save_path + "/thumb_" + str(uuid.uuid4()) + ".png"))
+    combined_image.save(Path(save_path + "/thumb_" + save_as_filename + ".png"))
+
+def file_guids(file_path: str, image_name: str, save_as_filename: str, save_path: str) -> None:
+    """Download a single image.
+
+    Args:
+        url: URL to download the image from.
+        file_path: Path to save the image to.
+    """
+
+    image = Image.open(file_path + "/" + image_name).convert("RGBA")
+    image.save(Path(save_path + "/" + save_as_filename + ".png"))
+
+    thumbnail_size = 125, 125
+    image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS)
+    image.save(Path(save_path + "/thumb_" + save_as_filename + ".png"))
 
 def blur_image(file_path: str, image_name: str, save_path: str) -> None:
     """Download a single image.
@@ -75,37 +91,56 @@ def blur_image(file_path: str, image_name: str, save_path: str) -> None:
 
     image = Image.open(file_path + "/" + image_name).convert("RGBA")
 
-    thumbnail_size = 800, 800
+    thumbnail_size = 256, 256
     image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS)
     filtered_image = image.filter(ImageFilter.GaussianBlur)
     filtered_2 = filtered_image.filter(ImageFilter.BLUR)
-    filtered_3 = filtered_2.filter(ImageFilter.BoxBlur(10))
-    filtered_3.save(Path(save_path + "/thumb_" + str(uuid.uuid4()) + ".png"))
+    filtered_2.save(Path(save_path + "/thumb_" + str(uuid.uuid4()) + ".png"))
 
-"""
 
-path = "/Users/owner/Documents/0 Copper - misc, behind the scenes"
-path2 = "/Users/owner/Documents/1 Silver - sensual"
+paths = [
+    "/Users/owner/Documents/0 Copper - misc, behind the scenes",
+    "/Users/owner/Documents/1 Silver - sensual",
+    "/Users/owner/Documents/2 Gold - nudes",
+    "/Users/owner/Documents/3 Diamond - hardcore"
+]
+path = paths[1]
 save_path = "/Users/owner/Documents/processed"
 watermark_text = "BityFan.com/noraK"
 
-print('watermarking images...')
+print('processing images...')
 onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+filenames = []
+thumb_filenames = []
 for f in onlyfiles:
     if f.startswith("."):
         continue
-    watermark_image(path, f, watermark_text, save_path)
+    saveas_filename = str(uuid.uuid4())
+    file_guids(path, f, saveas_filename, save_path )
+    filenames.append(saveas_filename)
+    thumb_filenames.append("thumb_" + saveas_filename)
 
-onlyfiles = [f for f in listdir(path2) if isfile(join(path2, f))]
-for f in onlyfiles:
-    if f.startswith("."):
-        continue
-    watermark_image(path2, f, watermark_text, save_path)
+f = open("processed_filenames.txt", "a")
 
-"""
+for i, file in enumerate(filenames):
+    if (i == len(filenames) - 1):
+        f.write(file)
+        break
+    f.write(file + ",")
+f.close()
 
-save_path = "/Users/owner/Documents/"
-blur_image("/Users/owner/Documents/", "daddy.png", save_path)
-blur_image("/Users/owner/Documents/", "boyfriend.png", save_path)
-blur_image("/Users/owner/Documents/", "fan.png", save_path)
+f = open("processed_thumb_filenames.txt", "a")
+for i, file in enumerate(filenames):
+    if (i == len(filenames) - 1):
+        f.write(file)
+        break
+    f.write(file)
+f.close()
+
+
+
+#save_path = "/Users/owner/Documents/"
+#blur_image("/Users/owner/Documents/", "daddy.png", save_path)
+#blur_image("/Users/owner/Documents/", "boyfriend.png", save_path)
+#blur_image("/Users/owner/Documents/", "fan.png", save_path)
 print('done')
