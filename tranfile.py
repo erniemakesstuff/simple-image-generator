@@ -110,6 +110,14 @@ watermark_text = "BityFan.com/noraK"
 
 print('processing images...')
 onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+for f in onlyfiles:
+    if f.startswith("."):
+        continue
+    saveas_filename = str(uuid.uuid4())
+    watermark_image(path, f, saveas_filename, watermark_text, save_path)
+
+"""
+onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
 filenames = []
 thumb_filenames = []
 for f in onlyfiles:
@@ -117,8 +125,8 @@ for f in onlyfiles:
         continue
     saveas_filename = str(uuid.uuid4())
     file_guids(path, f, saveas_filename, save_path )
-    filenames.append(saveas_filename)
-    thumb_filenames.append("thumb_" + saveas_filename)
+    filenames.append(saveas_filename + ".png")
+    thumb_filenames.append("thumb_" + saveas_filename + ".png")
 
 f = open("processed_filenames.txt", "a")
 
@@ -136,7 +144,7 @@ for i, file in enumerate(filenames):
         break
     f.write(file)
 f.close()
-
+"""
 
 
 #save_path = "/Users/owner/Documents/"
