@@ -60,11 +60,11 @@ def watermark_image(file_path: str, image_name: str, save_as_filename: str, wate
         draw.text((x + 75, ny), watermark_text, fill=(255, 255, 255, interference_transparency), font=interference_text, anchor='ms')
 
     combined_image = Image.alpha_composite(image, txt)
-    combined_image.save(Path(save_path + "/" + save_as_filename + ".png"))
+    combined_image.save(Path(save_path + "/" + save_as_filename + ".jpg"))
 
     thumbnail_size = 125, 125
     combined_image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS)
-    combined_image.save(Path(save_path + "/thumb_" + save_as_filename + ".png"))
+    combined_image.save(Path(save_path + "/thumb_" + save_as_filename + ".jpg"))
 
 def file_guids(file_path: str, image_name: str, save_as_filename: str, save_path: str) -> None:
     """Download a single image.
@@ -75,11 +75,11 @@ def file_guids(file_path: str, image_name: str, save_as_filename: str, save_path
     """
 
     image = Image.open(file_path + "/" + image_name).convert("RGBA")
-    image.save(Path(save_path + "/" + save_as_filename + ".png"))
+    image.save(Path(save_path + "/" + save_as_filename + ".jpg"))
 
     thumbnail_size = 125, 125
     image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS)
-    image.save(Path(save_path + "/thumb_" + save_as_filename + ".png"))
+    image.save(Path(save_path + "/thumb_" + save_as_filename + ".jpg"))
 
 def blur_image(file_path: str, image_name: str, save_path: str) -> None:
     """Download a single image.
@@ -95,7 +95,7 @@ def blur_image(file_path: str, image_name: str, save_path: str) -> None:
     image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS)
     filtered_image = image.filter(ImageFilter.GaussianBlur)
     filtered_2 = filtered_image.filter(ImageFilter.BLUR)
-    filtered_2.save(Path(save_path + "/thumb_" + str(uuid.uuid4()) + ".png"))
+    filtered_2.save(Path(save_path + "/thumb_" + str(uuid.uuid4()) + ".jpg"))
 
 
 paths = [
@@ -125,8 +125,8 @@ for f in onlyfiles:
         continue
     saveas_filename = str(uuid.uuid4())
     file_guids(path, f, saveas_filename, save_path )
-    filenames.append(saveas_filename + ".png")
-    thumb_filenames.append("thumb_" + saveas_filename + ".png")
+    filenames.append(saveas_filename + ".jpg")
+    thumb_filenames.append("thumb_" + saveas_filename + ".jpg")
 
 f = open("processed_filenames.txt", "a")
 
@@ -148,7 +148,7 @@ f.close()
 
 
 #save_path = "/Users/owner/Documents/"
-#blur_image("/Users/owner/Documents/", "daddy.png", save_path)
-#blur_image("/Users/owner/Documents/", "boyfriend.png", save_path)
-#blur_image("/Users/owner/Documents/", "fan.png", save_path)
+#blur_image("/Users/owner/Documents/", "daddy.jpg", save_path)
+#blur_image("/Users/owner/Documents/", "boyfriend.jpg", save_path)
+#blur_image("/Users/owner/Documents/", "fan.jpg", save_path)
 print('done')

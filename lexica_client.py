@@ -27,7 +27,7 @@ def download_image(url: str, watermark_text: str, file_path: Path) -> None:
     req: Request = Request(url, headers={"User-Agent": "Mozilla/5.0"})
     # FIXME: This is a potential security issue
     raw_img = urlopen(req).read()  # noqa: S310
-    tmp_file = str(random.randint(0, 1000)) + "tmp_image.png"
+    tmp_file = str(random.randint(0, 1000)) + "tmp_image.jpg"
     with open(tmp_file, "wb") as f:
         f.write(raw_img)
         f.close()
